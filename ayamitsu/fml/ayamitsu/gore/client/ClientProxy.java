@@ -1,9 +1,7 @@
 package ayamitsu.gore.client;
 
-import ayamitsu.gore.common.*;
-
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
+import ayamitsu.gore.common.CommonProxy;
+import ayamitsu.gore.common.EntityBloodStain;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class ClientProxy extends CommonProxy

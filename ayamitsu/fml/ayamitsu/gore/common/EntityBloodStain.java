@@ -1,12 +1,20 @@
 package ayamitsu.gore.common;
 
-import net.minecraft.src.*;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
-import java.io.IOException;
-import java.io.ByteArrayOutputStream;
+
+import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityBloodStain extends Entity implements IEntityAdditionalSpawnData
 {
@@ -16,12 +24,12 @@ public class EntityBloodStain extends Entity implements IEntityAdditionalSpawnDa
     public int age;
 	private boolean touchGround = false;
 	private EntityLiving targetEntity;
-	
+
 	public EntityBloodStain(World world)
 	{
 		this(world, (EntityLiving)null);
 	}
-	
+
     public EntityBloodStain(World world, EntityLiving entity)
     {
         super(world);
@@ -34,45 +42,45 @@ public class EntityBloodStain extends Entity implements IEntityAdditionalSpawnDa
         this.age = 0;
     	this.targetEntity = entity;
     }
-	
+
 	@Override
 	public void setDead()
     {
         super.setDead();
     }
-	
+
 	// add
 	public EntityLiving getEntity()
 	{
 		return this.targetEntity;
 	}
-	
+
 	@Override
 	protected boolean canTriggerWalking()
     {
         return false;
     }
-	
+
 	@Override
 	public boolean isInRangeToRenderDist(double d)
     {
         return true;
     }
-	
+
 	@Override
 	public void entityInit() {}
-	
+
 	public float getRange()
     {
-        return ((float)this.strength / 100F) * 64F;
+        return (this.strength / 100F) * 64F;
     }
-	
+
 	public void setStrength(int i)
     {
         this.age = (100 - i) * 10;
         this.strength = 100 - this.age / 10;
     }
-	
+
 	@Override
 	public void onUpdate()
     {
@@ -83,47 +91,52 @@ public class EntityBloodStain extends Entity implements IEntityAdditionalSpawnDa
         {
             this.setDead();
         }
-    	
+
     	if (this.onGround)
     	{
     		this.touchGround = true;
     	}
-    	
+
     	if (this.touchGround && !this.onValidSurface())
     	{
     		this.setDead();
     	}
     }
-	
+
 	@Override
 	public void writeEntityToNBT(NBTTagCompound nbttagcompound)
     {
         nbttagcompound.setShort("age", (short)this.age);
         nbttagcompound.setShort("type", (short)this.type);
     	NBTTagCompound entityNBT = new NBTTagCompound();
-    	
+
     	if (this.targetEntity != null)
     	{
     		this.targetEntity.writeToNBT(entityNBT);
-    		entityNBT.setString("id", EntityList.getEntityString(this.targetEntity));
+    		String name = EntityList.getEntityString(this.targetEntity);
+
+    		if (name != null && !name.equals(""))
+    		{
+    			entityNBT.setString("id", name);
+    		}
     	}
-    	
+
     	nbttagcompound.setCompoundTag("Target", entityNBT);
     }
-	
+
 	@Override
 	public void readEntityFromNBT(NBTTagCompound nbttagcompound)
     {
         this.age = nbttagcompound.getShort("age");
         this.type = nbttagcompound.getShort("type");
     	NBTTagCompound entityNBT = nbttagcompound.getCompoundTag("Target");
-    	
+
     	if (entityNBT != null)
     	{
     		this.targetEntity = (EntityLiving)EntityList.createEntityFromNBT(entityNBT, this.worldObj);
     	}
     }
-	
+
 	public boolean onValidSurface()
     {
         if (this.worldObj.getCollidingBoundingBoxes(this, this.boundingBox).size() > 0)
@@ -134,26 +147,26 @@ public class EntityBloodStain extends Entity implements IEntityAdditionalSpawnDa
     	int tileX = MathHelper.floor_double(this.posX);
     	int tileY = MathHelper.floor_double(this.posY);
     	int tileZ = MathHelper.floor_double(this.posZ);
-    	
+
     	if (!this.worldObj.getBlockMaterial(tileX, tileY - 1, tileZ).isSolid())
     	{
     		return false;
     	}
-    	
+
         return true;
     }
-	
+
 // IEntityAdditionalSpawnData
-	
+
 	/**
-	 * ƒpƒPƒbƒg‚É‘‚«‚İA‚½‚Ô‚ñServerSide
+	 * ï¿½pï¿½Pï¿½bï¿½gï¿½Éï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İAï¿½ï¿½ï¿½Ô‚ï¿½ServerSide
 	 */
 	@Override
 	public void writeSpawnData(ByteArrayDataOutput bado)
 	{
 		NBTTagCompound nbttagcompound = new NBTTagCompound();
 		this.writeToNBT(nbttagcompound);
-		
+
 		try
 		{
 			byte[] data = CompressedStreamTools.compress(nbttagcompound);
@@ -164,15 +177,15 @@ public class EntityBloodStain extends Entity implements IEntityAdditionalSpawnDa
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
-	 * ƒpƒPƒbƒg‚Ì“Ç‚İ‚İA‚½‚Ô‚ñClientSide
+	 * ï¿½pï¿½Pï¿½bï¿½gï¿½Ì“Ç‚İï¿½ï¿½İAï¿½ï¿½ï¿½Ô‚ï¿½ClientSide
 	 */
 	@Override
 	public void readSpawnData(ByteArrayDataInput badi)
 	{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		
+
 		try
 		{
 			try
@@ -184,7 +197,7 @@ public class EntityBloodStain extends Entity implements IEntityAdditionalSpawnDa
 			}
 			catch (ArrayIndexOutOfBoundsException e) {}
 			catch (IllegalStateException e1) {}
-			
+
 			byte[] data = baos.toByteArray();
 			NBTTagCompound nbttagcompound = CompressedStreamTools.decompress(data);
 			this.readFromNBT(nbttagcompound);

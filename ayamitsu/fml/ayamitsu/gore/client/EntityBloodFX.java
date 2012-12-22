@@ -1,11 +1,16 @@
 package ayamitsu.gore.client;
 
-import ayamitsu.gore.common.GoreRegistry;
-
-import net.minecraft.src.*;
 import java.util.Random;
-import cpw.mods.fml.common.Side;
-import cpw.mods.fml.common.asm.SideOnly;
+
+import net.minecraft.block.material.Material;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.util.MathHelper;
+import net.minecraft.world.World;
+import ayamitsu.gore.common.GoreRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class EntityBloodFX extends EntityFX
@@ -67,9 +72,9 @@ public class EntityBloodFX extends EntityFX
 	public final float[] getColor(int hex)
 	{
 		return new float[] {
-			((float)((hex >> 0x10) & 0xFF)) / 255.0F,
-			((float)((hex >> 0x08) & 0xFF)) / 255.0F,
-			((float)((hex >> 0x00) & 0xFF)) / 255.0F,
+			((hex >> 0x10) & 0xFF) / 255.0F,
+			((hex >> 0x08) & 0xFF) / 255.0F,
+			((hex >> 0x00) & 0xFF) / 255.0F,
 		};
 	}
 	

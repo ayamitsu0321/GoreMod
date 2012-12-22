@@ -30,7 +30,7 @@ public class mod_GoreMod extends BaseMod
 	@Override
 	public String getVersion()
 	{
-		return "1.4.4-v0.0.5";
+		return "1.4.6-v1.0.2";
 	}
 	
 	@Override
