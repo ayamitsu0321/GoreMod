@@ -7,18 +7,18 @@ import org.lwjgl.opengl.GL12;
 public class RenderBloodStain extends Render
 {
 	public RenderBloodStain() {}
-	
+
 	public void doRenderNode(Entity entity, double d, double d1, double d2, float f, float f1)
     {
     	EntityBloodStain stain = (EntityBloodStain)entity;
-        
+
     	if (stain.type != 1)
         {
         	String texture = stain.getEntity() != null && stain.getEntity().getBloodTexture() != null ? stain.getEntity().getBloodTexture() : "/ayamitsu/gore/misc/blood_red.png";
             this.renderImage(entity, d, d1, d2, f, f1, texture);
         }
     }
-	
+
 	@Override
     public void doRender(Entity entity, double d, double d1, double d2, float f, float f1)
 	{
@@ -39,19 +39,20 @@ public class RenderBloodStain extends Render
 		this.shadowSize = 0.0F;
 		GL11.glPopMatrix();
 	}
-	
+
 	private void renderImage(Entity entity, double d, double d1, double d2, float f, float f1, String s)
     {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     	RenderEngine renderengine = this.renderManager.renderEngine;
-    	renderengine.bindTexture(renderengine.getTexture(s));//this.loadTexture(s);
+    	//renderengine.bindTexture(renderengine.getTexture(s));//this.loadTexture(s);
+    	renderengine.func_98187_b(s);
         World world = this.getWorldFromRenderManager();
         GL11.glDepthMask(false);
         //RenderHelper.disableStandardItemLighting();//
     	RenderHelper.enableStandardItemLighting();
     	float f2 = this.shadowSize;
-    	
+
         double d3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double)f1;
         double d4 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double)f1 + (double)entity.getShadowSize();
         double d5 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double)f1;
@@ -90,12 +91,12 @@ public class RenderBloodStain extends Render
         GL11.glDisable(GL11.GL_BLEND);
         GL11.glDepthMask(true);
     }
-	
+
 	private World getWorldFromRenderManager()
     {
         return renderManager.worldObj;
     }
-	
+
 	private void renderImageOnBlock(Block block, double d, double d1, double d2, int i, int j, int k, float f, float f1, double d3, double d4, double d5, double d6)
     {
         Tessellator tessellator = Tessellator.instance;
@@ -104,7 +105,7 @@ public class RenderBloodStain extends Render
         {
         	return;
         }
-    	
+
         double d7 = d6;
     	//double d7 = ((double)f - (d1 - ((double)j + d5)) / 2.0D) * 0.5D * (double)this.getWorldFromRenderManager().getLightBrightness(i, j, k);
 

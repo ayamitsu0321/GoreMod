@@ -13,7 +13,7 @@ public class EntityBloodFX extends EntityFX
     public EntityBloodFX(World world, double d, double d1, double d2, boolean flag, EntityLiving entity)
     {
         super(world, d, d1, d2, 0.0D, 0.0D, 0.0D);
-    	
+
         if (flag)
         {
             this.motionX *= 0.60000002384185791D;
@@ -43,7 +43,7 @@ public class EntityBloodFX extends EntityFX
         this.particleRed = colors[0];
         this.particleGreen = colors[1];
         this.particleBlue = colors[2];
-    	this.particleScale *= GoreRegistry.fTransformVariable("bloodSize");
+    	this.particleScale *= GoreRegistry.BLOOD_SIZE;
         this.particleMaxAge = rand.nextInt() % 280 + 1;
 
         if (this.worldObj.isRaining())
@@ -53,12 +53,12 @@ public class EntityBloodFX extends EntityFX
 
         this.noClip = false;
     }
-	
+
 	public void renderParticle(Tessellator tessellator, float f, float f1, float f2, float f3, float f4, float f5)
     {
         super.renderParticle(tessellator, f, f1, f2, f3, f4, f5);
     }
-	
+
 	public final float[] getColor(int hex)
 	{
 		return new float[] {
@@ -67,7 +67,7 @@ public class EntityBloodFX extends EntityFX
 			((float)((hex >> 0x00) & 0xFF)) / 255.0F,
 		};
 	}
-	
+
 	public void onUpdate()
     {
         this.prevPosX = this.posX;

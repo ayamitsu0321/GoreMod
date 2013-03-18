@@ -66,6 +66,10 @@ end
 
 #これ以降はそれぞれ好みで
 
+begin
 folder = get_dirname
 copy_paste_dir("./ayamitsu", folder)
-copy_paste_file("./EntityLiving.java", folder)
+rescue
+p $!
+gets
+end

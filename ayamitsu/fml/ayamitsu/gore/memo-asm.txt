@@ -1,0 +1,52 @@
+// for 1.5.0
+
+-class
+	EntityLiving "ng"
+	-field
+		public boolean isBleeding;
+		public int ticksNoBlood;
+		public int ticksActuallyBleeding;
+	-method
+		-insn
+			public void onUpdate()
+				-insert
+					updateBlood();
+
+			public boolean attackEntityFrom(DamageSource, int)
+				-insert
+					ayamitsu.gore.common..EntityHooks.onAttackEntityFrom(damagesource, this);
+
+			public void onDeath(DamageSource)
+				-insert
+					ayamitsu.gore.common..EntityHooks.onDeath(damagesource, this);
+
+		-add
+			public void updateBlood()
+			{
+				ayamitsu.gore.common.EntityHooks.onUpdateBlood(this);
+			}
+
+			public boolean canBleedByDamage(DamageSource damagesource)
+			{
+				return ayamitsu.gore.common.EntityHooks.defaultCanBleedByDamage(damagesource);
+			}
+
+			public boolean canHurtByItem(ItemStack is)
+			{
+				return ayamitsu.gore.common.EntityHooks.defaultCanHurtByItem(is);
+			}
+
+			public boolean canBleed()
+			{
+				return ayamitsu.gore.common.EntityHooks.defaultCanBleed(this);
+			}
+
+			public String getBloodTexture()
+			{
+				return ayamitsu.gore.common.EntityHooks.defaultGetBloodTexture(this);
+			}
+
+			public int getBloodColor()
+			{
+				return ayamitsu.gore.common.EntityHooks.defaultGetBloodColor(this);
+			}

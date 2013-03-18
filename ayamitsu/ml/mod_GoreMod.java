@@ -30,13 +30,13 @@ public class mod_GoreMod extends BaseMod
 	@Override
 	public String getVersion()
 	{
-		return "1.4.6-v1.0.2";
+		return "1.5.0-v1.1.0";
 	}
 	
 	@Override
 	public void load()
 	{
-		ModLoader.registerEntityID(EntityBloodStain.class, "bloodstai", this.stainId);
+		ModLoader.registerEntityID(EntityBloodStain.class, "bloodstain", this.stainId);
 		ModLoader.addLocalization("entity.bloodstain.name", "en_US", "BloodStain");
 		String[] near = this.nearDamage.split(",");
 		

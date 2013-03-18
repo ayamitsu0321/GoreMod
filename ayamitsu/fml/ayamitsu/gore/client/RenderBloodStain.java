@@ -25,10 +25,10 @@ public class RenderBloodStain extends Render
     	EntityBloodStain stain = (EntityBloodStain)entity;
 
     	if (stain.type != 1)
-        {
-        	String texture = stain.getEntity() != null && stain.getEntity().getBloodTexture() != null ? stain.getEntity().getBloodTexture() : "/ayamitsu/gore/misc/blood_red.png";
-            this.renderImage(entity, d, d1, d2, f, f1, texture);
-        }
+    	{
+	    	String texture = stain.getBloodTexture();
+	    	this.renderImage(entity, d, d1, d2, f, f1, texture);
+    	}
     }
 
 	@Override
@@ -57,7 +57,8 @@ public class RenderBloodStain extends Render
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     	RenderEngine renderengine = this.renderManager.renderEngine;
-    	renderengine.bindTexture(renderengine.getTexture(s));//this.loadTexture(s);
+    	//renderengine.bindTexture(renderengine.getTexture(s));//this.loadTexture(s);
+    	this.loadTexture(s);
         World world = this.getWorldFromRenderManager();
         GL11.glDepthMask(false);
         //RenderHelper.disableStandardItemLighting();//
