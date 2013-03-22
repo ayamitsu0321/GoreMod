@@ -1,4 +1,4 @@
-【MOD名】GoreMod-1.5.0-1.0.3 for ML
+【MOD名】GoreMod-1.5.1-1.1.0 for ML
 
 【概要】
 EvilMinecraftの血痕の要素、BloodModの出血を併用したいがために作ったMODです。

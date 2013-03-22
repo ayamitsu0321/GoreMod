@@ -46,7 +46,7 @@ public class RenderBloodStain extends Render
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
     	RenderEngine renderengine = this.renderManager.renderEngine;
     	//renderengine.bindTexture(renderengine.getTexture(s));//this.loadTexture(s);
-    	renderengine.func_98187_b(s);
+    	renderengine.bindTexture(s);
         World world = this.getWorldFromRenderManager();
         GL11.glDepthMask(false);
         //RenderHelper.disableStandardItemLighting();//
